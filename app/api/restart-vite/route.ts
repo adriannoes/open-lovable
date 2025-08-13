@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { logger } from '@/lib/logger';
 
 declare global {
   var activeSandbox: any;
@@ -13,7 +14,7 @@ export async function POST() {
       }, { status: 400 });
     }
     
-    console.log('[restart-vite] Forcing Vite restart...');
+    logger.info('[restart-vite] Forcing Vite restart...');
     
     // Kill existing Vite process and restart
     const result = await global.activeSandbox.runCode(`
@@ -127,7 +128,7 @@ print("Vite is ready")
     });
     
   } catch (error) {
-    console.error('[restart-vite] Error:', error);
+    logger.error({ err: error }, '[restart-vite] Error');
     return NextResponse.json({ 
       success: false, 
       error: (error as Error).message 

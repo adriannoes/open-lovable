@@ -17,7 +17,12 @@ const eslintConfig = [
       "@typescript-eslint/no-unused-vars": "warn",
       "react-hooks/exhaustive-deps": "warn",
       "react/no-unescaped-entities": "off",
-      "prefer-const": "warn"
+      "prefer-const": "warn",
+      // Encourage using the structured logger instead of console
+      "no-console": [
+        "warn",
+        { allow: ["warn", "error"] }
+      ]
     }
   }
 ];

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { logger } from '@/lib/logger';
 
 declare global {
   var viteErrors: any[];
@@ -44,7 +45,7 @@ export async function POST(request: NextRequest) {
       global.viteErrors = global.viteErrors.slice(-50);
     }
     
-    console.log('[report-vite-error] Error reported:', errorObj);
+    logger.info({ error: errorObj }, '[report-vite-error] Error reported');
     
     return NextResponse.json({
       success: true,
@@ -53,7 +54,7 @@ export async function POST(request: NextRequest) {
     });
     
   } catch (error) {
-    console.error('[report-vite-error] Error:', error);
+    logger.error({ err: error }, '[report-vite-error] Error');
     return NextResponse.json({ 
       success: false, 
       error: (error as Error).message 

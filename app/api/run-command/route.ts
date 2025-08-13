@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Sandbox } from '@e2b/code-interpreter';
+import { logger } from '@/lib/logger';
 
 // Get active sandbox from global state (in production, use a proper state management solution)
 declare global {
@@ -24,7 +25,7 @@ export async function POST(request: NextRequest) {
       }, { status: 400 });
     }
     
-    console.log(`[run-command] Executing: ${command}`);
+    logger.info({ command }, '[run-command] Executing');
     
     const result = await global.activeSandbox.runCode(`
 import subprocess
@@ -53,7 +54,7 @@ print(f"\\nReturn code: {result.returncode}")
     });
     
   } catch (error) {
-    console.error('[run-command] Error:', error);
+    logger.error({ err: error }, '[run-command] Error');
     return NextResponse.json({ 
       success: false, 
       error: (error as Error).message 

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { logger } from '@/lib/logger';
 
 // Function to sanitize smart quotes and other problematic characters
 function sanitizeQuotes(text: string): string {
@@ -27,7 +28,7 @@ export async function POST(request: NextRequest) {
       }, { status: 400 });
     }
     
-    console.log('[scrape-url-enhanced] Scraping with Firecrawl:', url);
+    logger.info({ url }, '[scrape-url-enhanced] Scraping with Firecrawl');
     
     const FIRECRAWL_API_KEY = process.env.FIRECRAWL_API_KEY;
     if (!FIRECRAWL_API_KEY) {
@@ -108,7 +109,7 @@ ${sanitizedMarkdown}
     });
     
   } catch (error) {
-    console.error('[scrape-url-enhanced] Error:', error);
+    logger.error({ err: error }, '[scrape-url-enhanced] Error');
     return NextResponse.json({
       success: false,
       error: (error as Error).message

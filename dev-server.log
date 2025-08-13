@@ -1,0 +1,103 @@
+
+> open-lovable@0.1.0 dev
+> next dev --turbopack
+
+   ▲ Next.js 15.4.3 (Turbopack)
+   - Local:        http://localhost:3000
+   - Network:      http://192.168.18.248:3000
+   - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 861ms
+   Reload env: .env.local
+   Reload env: .env.local
+ ○ Compiling / ...
+ ✓ Compiled / in 3s
+ GET / 200 in 3523ms
+ GET / 200 in 80ms
+ ✓ Compiled /api/conversation-state in 252ms
+ GET /api/sandbox-status 200 in 302ms
+ POST /api/conversation-state 400 in 318ms
+ GET /favicon.ico?favicon.45db1c09.ico 200 in 486ms
+ ✓ Compiled /api/create-ai-sandbox in 170ms
+[create-ai-sandbox] Creating base sandbox...
+[create-ai-sandbox] Creating base E2B sandbox with 15 minute timeout...
+[create-ai-sandbox] Sandbox created: i9qjteh8pb4pxyxjo3ba9
+[create-ai-sandbox] Sandbox host: 5173-i9qjteh8pb4pxyxjo3ba9.e2b.app
+[create-ai-sandbox] Setting up Vite React app...
+[create-ai-sandbox] Installing dependencies...
+ GET /?model=openai%2Fgpt-5 200 in 39ms
+ GET /api/sandbox-status 200 in 16ms
+[create-ai-sandbox] Starting Vite dev server...
+ GET /api/sandbox-status 200 in 23ms
+[create-ai-sandbox] Set sandbox timeout to 15 minutes
+[create-ai-sandbox] Sandbox ready at: https://5173-i9qjteh8pb4pxyxjo3ba9.e2b.app
+ POST /api/create-ai-sandbox 200 in 38693ms
+ GET /?sandbox=i9qjteh8pb4pxyxjo3ba9&model=moonshotai%2Fkimi-k2-instruct 200 in 46ms
+ ✓ Compiled /api/restart-vite in 80ms
+[restart-vite] Forcing Vite restart...
+ POST /api/restart-vite 200 in 5852ms
+ GET /api/sandbox-status 200 in 27ms
+ GET /api/sandbox-status 200 in 25ms
+ GET /api/sandbox-status 200 in 77ms
+ GET /api/sandbox-status 200 in 19ms
+ GET /api/sandbox-status 200 in 29ms
+ GET /api/sandbox-status 200 in 30ms
+ ✓ Compiled in 457ms
+ ✓ Compiled / in 21ms
+ GET /?sandbox=i9qjteh8pb4pxyxjo3ba9&model=moonshotai%2Fkimi-k2-instruct 200 in 131ms
+ GET /api/sandbox-status 200 in 41ms
+ GET /api/sandbox-status 200 in 31ms
+ ✓ Compiled /api/scrape-url-enhanced in 110ms
+[scrape-url-enhanced] Scraping with Firecrawl: https://www.pipefy.com/ai/
+ GET /api/sandbox-status 200 in 31ms
+[scrape-url-enhanced] Error: Error: Firecrawl API error: {"success":false,"error":"Request timed out"}
+    at POST (app/api/scrape-url-enhanced/route.ts:62:12)
+  60 |     if (!firecrawlResponse.ok) {
+  61 |       const error = await firecrawlResponse.text();
+> 62 |       throw new Error(`Firecrawl API error: ${error}`);
+     |            ^
+  63 |     }
+  64 |     
+  65 |     const data = await firecrawlResponse.json();
+ POST /api/scrape-url-enhanced 500 in 31166ms
+Screenshot capture error: Error: Firecrawl API error: {"success":false,"error":"Request timed out"}
+    at POST (app/api/scrape-screenshot/route.ts:35:12)
+  33 |     if (!firecrawlResponse.ok) {
+  34 |       const error = await firecrawlResponse.text();
+> 35 |       throw new Error(`Firecrawl API error: ${error}`);
+     |            ^
+  36 |     }
+  37 |
+  38 |     const data = await firecrawlResponse.json();
+ POST /api/scrape-screenshot 500 in 31205ms
+ HEAD / 200 in 420ms
+ GET / 200 in 49ms
+ GET /api/sandbox-status 200 in 41ms
+ GET /api/sandbox-status 200 in 31ms
+[scrape-url-enhanced] Scraping with Firecrawl: https://example.com
+ GET /api/sandbox-status 200 in 24ms
+ ✓ Compiled /api/create-zip in 92ms
+[create-zip] Creating project zip...
+ POST /api/create-zip 200 in 1008ms
+ POST /api/scrape-url-enhanced 200 in 26814ms
+ GET /api/sandbox-status 200 in 37ms
+ GET / 200 in 77ms
+ POST /api/conversation-state 400 in 27ms
+ GET /api/sandbox-status 200 in 29ms
+[create-ai-sandbox] Creating base sandbox...
+[create-ai-sandbox] Killing existing sandbox...
+[create-ai-sandbox] Creating base E2B sandbox with 15 minute timeout...
+[create-ai-sandbox] Sandbox created: i45svw98klp1qbm0hohse
+[create-ai-sandbox] Sandbox host: 5173-i45svw98klp1qbm0hohse.e2b.app
+[create-ai-sandbox] Setting up Vite React app...
+[create-ai-sandbox] Installing dependencies...
+ ✓ Compiled in 483ms
+ GET /api/sandbox-status 200 in 36ms
+[create-ai-sandbox] Starting Vite dev server...
+[create-ai-sandbox] Set sandbox timeout to 15 minutes
+[create-ai-sandbox] Sandbox ready at: https://5173-i45svw98klp1qbm0hohse.e2b.app
+ POST /api/create-ai-sandbox 200 in 38773ms
+ GET /?sandbox=i45svw98klp1qbm0hohse&model=moonshotai%2Fkimi-k2-instruct 200 in 45ms
+[restart-vite] Forcing Vite restart...
+ POST /api/restart-vite 200 in 5247ms

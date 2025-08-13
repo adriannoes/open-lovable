@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "engines": {
+    "node": ">=18.18 <23",
+    "npm": ">=9"
+  },
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
@@ -14,6 +18,8 @@
     "test:all": "npm run test:integration && npm run test:api && npm run test:code"
   },
   "dependencies": {
+    "pino": "^9.6.0",
+    "pino-pretty": "^11.2.2",
     "@ai-sdk/anthropic": "^2.0.1",
     "@ai-sdk/google": "^2.0.4",
     "@ai-sdk/groq": "^2.0.0",

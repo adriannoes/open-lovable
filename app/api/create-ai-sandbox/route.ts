@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { Sandbox } from '@e2b/code-interpreter';
 import type { SandboxState } from '@/types/sandbox';
 import { appConfig } from '@/config/app.config';
+import { logger } from '@/lib/logger';
 
 // Store active sandbox globally
 declare global {
@@ -15,15 +16,15 @@ export async function POST() {
   let sandbox: any = null;
 
   try {
-    console.log('[create-ai-sandbox] Creating base sandbox...');
+    logger.info('[create-ai-sandbox] Creating base sandbox...');
     
     // Kill existing sandbox if any
     if (global.activeSandbox) {
-      console.log('[create-ai-sandbox] Killing existing sandbox...');
+      logger.warn('[create-ai-sandbox] Killing existing sandbox...');
       try {
         await global.activeSandbox.kill();
       } catch (e) {
-        console.error('Failed to close existing sandbox:', e);
+        logger.error({ err: e }, 'Failed to close existing sandbox');
       }
       global.activeSandbox = null;
     }
@@ -36,7 +37,7 @@ export async function POST() {
     }
 
     // Create base sandbox - we'll set up Vite ourselves for full control
-    console.log(`[create-ai-sandbox] Creating base E2B sandbox with ${appConfig.e2b.timeoutMinutes} minute timeout...`);
+    logger.info({ timeoutMinutes: appConfig.e2b.timeoutMinutes }, '[create-ai-sandbox] Creating base E2B sandbox');
     sandbox = await Sandbox.create({ 
       apiKey: process.env.E2B_API_KEY,
       timeoutMs: appConfig.e2b.timeoutMs
@@ -45,11 +46,10 @@ export async function POST() {
     const sandboxId = (sandbox as any).sandboxId || Date.now().toString();
     const host = (sandbox as any).getHost(appConfig.e2b.vitePort);
     
-    console.log(`[create-ai-sandbox] Sandbox created: ${sandboxId}`);
-    console.log(`[create-ai-sandbox] Sandbox host: ${host}`);
+    logger.info({ sandboxId, host }, '[create-ai-sandbox] Sandbox created');
 
     // Set up a basic Vite React app using Python to write files
-    console.log('[create-ai-sandbox] Setting up Vite React app...');
+    logger.info('[create-ai-sandbox] Setting up Vite React app...');
     
     // Write all files in a single Python script to avoid multiple executions
     const setupScript = `
@@ -229,7 +229,7 @@ print('\\nAll files created successfully!')
     await sandbox.runCode(setupScript);
     
     // Install dependencies
-    console.log('[create-ai-sandbox] Installing dependencies...');
+    logger.info('[create-ai-sandbox] Installing dependencies...');
     await sandbox.runCode(`
 import subprocess
 import sys
@@ -250,7 +250,7 @@ else:
     `);
     
     // Start Vite dev server
-    console.log('[create-ai-sandbox] Starting Vite dev server...');
+    logger.info('[create-ai-sandbox] Starting Vite dev server...');
     await sandbox.runCode(`
 import subprocess
 import os
@@ -306,7 +306,7 @@ print('✓ Tailwind CSS should be loaded')
     // Set extended timeout on the sandbox instance if method available
     if (typeof sandbox.setTimeout === 'function') {
       sandbox.setTimeout(appConfig.e2b.timeoutMs);
-      console.log(`[create-ai-sandbox] Set sandbox timeout to ${appConfig.e2b.timeoutMinutes} minutes`);
+      logger.info({ timeoutMinutes: appConfig.e2b.timeoutMinutes }, '[create-ai-sandbox] Set sandbox timeout');
     }
     
     // Initialize sandbox state
@@ -333,7 +333,7 @@ print('✓ Tailwind CSS should be loaded')
     global.existingFiles.add('tailwind.config.js');
     global.existingFiles.add('postcss.config.js');
     
-    console.log('[create-ai-sandbox] Sandbox ready at:', `https://${host}`);
+    logger.info({ url: `https://${host}` }, '[create-ai-sandbox] Sandbox ready');
     
     return NextResponse.json({
       success: true,
@@ -343,14 +343,14 @@ print('✓ Tailwind CSS should be loaded')
     });
 
   } catch (error) {
-    console.error('[create-ai-sandbox] Error:', error);
+    logger.error({ err: error }, '[create-ai-sandbox] Error');
     
     // Clean up on error
     if (sandbox) {
       try {
         await sandbox.kill();
       } catch (e) {
-        console.error('Failed to close sandbox on error:', e);
+        logger.error({ err: e }, 'Failed to close sandbox on error');
       }
     }
     

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { logger } from '@/lib/logger';
 
 export async function POST(req: NextRequest) {
   try {
@@ -48,7 +49,7 @@ export async function POST(req: NextRequest) {
     });
 
   } catch (error: any) {
-    console.error('Screenshot capture error:', error);
+    logger.error({ err: error }, '[scrape-screenshot] Error');
     return NextResponse.json({ 
       error: error.message || 'Failed to capture screenshot' 
     }, { status: 500 });
